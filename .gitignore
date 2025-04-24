@@ -1,0 +1,34 @@
+# Composer related
+/vendor/
+/.composer/
+composer.lock
+
+# Log files
+*.log
+/logs/
+
+# Cache and temporary files
+/cache/
+/tmp/
+/var/cache/
+/var/tmp/
+sessions/
+cookies/
+
+# IDE specific files
+.idea/
+.vscode/
+nbproject/
+NetBeansProjects/
+
+# Operating system and editor temporary files
+*.swp
+.*~
+._*
+.DS_Store
+Thumbs.db
+
+# PHPUnit
+phpunit.xml
+phpunit.xml.dist
+/coverage/
