@@ -167,7 +167,7 @@ class GeminiClient
                         throw new GeminiApiException("Invalid input: Unsupported MIME type for file: {$mimeType}. Supported types are image/* and application/pdf.");
                     }
                     $base64DataParts = explode(',', $prompt['base64'], 2);
-                    $base64Data = isset($base64DataParts[1]) ? $prompt['base64'] : "data:{$mimeType};base64,{$prompt['base64']}";
+                    $base64Data = isset($base64DataParts[1]) ? $base64DataParts[1] : $prompt['base64'];
                     $parts[] = array('inlineData' => array('mimeType' => $mimeType, 'data' => $base64Data));
                     $this->history[] = array('role' => 'user', 'inlineData' => array('mimeType' => $mimeType, 'data' => $base64Data));
                 } elseif ($prompt['type'] === 'text' && isset($prompt['text'])) {
