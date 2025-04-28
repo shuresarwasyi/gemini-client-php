@@ -173,6 +173,25 @@ class GeminiClient
                 } elseif ($prompt['type'] === 'text' && isset($prompt['text'])) {
                     $parts[] = array('text' => $prompt['text']);
                     $this->history[] = array('role' => 'user', 'text' => $prompt['text']);
+                } elseif ($prompt['type'] === 'file' && isset($prompt['url'])) {
+                    $fileUrl = $prompt['url'];
+
+                    $fileData = @file_get_contents($fileUrl);
+                    if ($fileData === false) {
+                        throw new GeminiApiException("Failed to download file from URL: {$fileUrl}");
+                    }
+
+                    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                    $mimeType = finfo_buffer($finfo, $fileData);
+                    finfo_close($finfo);
+
+                    if (!$this->_startsWith($mimeType, 'image/') && $mimeType !== 'application/pdf') {
+                        throw new GeminiApiException("Invalid input: Unsupported MIME type for file: {$mimeType}. Supported types are image/* and application/pdf.");
+                    }
+
+                    $base64Data = base64_encode($fileData);
+                    $parts[] = array('inlineData' => array('mimeType' => $mimeType, 'data' => $base64Data));
+                    $this->history[] = array('role' => 'user', 'inlineData' => array('mimeType' => $mimeType, 'data' => $base64Data));
                 } elseif ($prompt['type'] === 'file' && isset($prompt['path'])) {
                     if (!file_exists($prompt['path'])) {
                         throw new GeminiApiException("Invalid input: File not found at path: {$prompt['path']}");
@@ -181,9 +200,9 @@ class GeminiClient
                     if (!$this->_startsWith($mimeType, 'image/') && $mimeType !== 'application/pdf') {
                         throw new GeminiApiException("Invalid input: Unsupported MIME type for file: {$mimeType}. Supported types are image/* and application/pdf.");
                     }
-                    $base64Image = base64_encode(file_get_contents($prompt['path']));
-                    $parts[] = array('inline_data' => array('mime_type' => $mimeType, 'data' => $base64Image));
-                    $this->history[] = array('role' => 'user', 'inlineData' => array('mimeType' => $mimeType, 'data' => $base64Image));
+                    $base64Data = base64_encode(file_get_contents($prompt['path']));
+                    $parts[] = array('inlineData' => array('mimeType' => $mimeType, 'data' => $base64Data));
+                    $this->history[] = array('role' => 'user', 'inlineData' => array('mimeType' => $mimeType, 'data' => $base64Data));
                 }
             }
         }
