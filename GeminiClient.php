@@ -129,6 +129,8 @@ class GeminiClient
      * - An associative array for text (e.g., `['type' => 'text', 'text' => 'Explain photosynthesis.']`).
      * - An associative array for a file (image or PDF) via path (e.g., `['type' => 'file', 'path' => '/path/to/image.jpg']`).
      * - An associative array for a file (image or PDF) via base64 encoded data (e.g., `['type' => 'file', 'base64' => 'iVBORw0KGgo...', 'mimeType' => 'image/png']` or `['type' => 'file', 'base64' => 'data:image/png;base64,iVBORw0KGgo...']`).
+     * - An associative array for a file (image or PDF) via URL (e.g., `['type' => 'file', 'url' => 'http://example.com/image.jpg']`).
+     * 
      * Ensure the `mimeType` is correctly specified if no data URL prefix is used.
      * @param string $responseType The desired response type (`GeminiClient::RESPONSE_TYPE_TEXT` or `GeminiClient::RESPONSE_TYPE_PHP_OBJECT`). Defaults to `GeminiClient::RESPONSE_TYPE_TEXT`.
      * @return mixed The API response in the specified format or `null` on error.

@@ -4,7 +4,7 @@ This PHP library provides a convenient way to interact with the Google Gemini AP
 
 ## Features
 
-* **Text and Multimodal Prompts:** Send text-based queries and prompts including images and PDF documents (via file path or base64 encoded data).
+* **Text and Multimodal Prompts:** Send text-based queries and prompts including images and PDF documents (via file path, base64 encoded data, or file URL).
 * **Multi-Prompt Support:** Send multiple prompts (text and/or media) within a single request.
 * **Conversation History Management:** Optionally maintain and include conversation history in subsequent requests.
 * **Response Format Selection:** Choose to receive the API response as plain text or a PHP object (for accessing raw JSON data).
@@ -78,6 +78,8 @@ For detailed usage examples, please refer to the files within the `examples` fol
         * An associative array for a file (image or PDF) via base64 encoded data:
             * `['type' => 'file', 'base64' => 'base64_data', 'mimeType' => 'image/*|application/pdf']` (e.g., `['type' => 'file', 'base64' => 'iVBORw0KGgo...', 'mimeType' => 'image/png']`). **Required if the base64 string does not have a `data:` URL prefix.**
             * `['type' => 'file', 'base64' => 'data:mime/type;base64,base64_data']` (e.g., `['type' => 'file', 'base64' => 'data:image/png;base64,iVBORw0KGgo...']`). **The MIME type will be automatically detected from the prefix if it is valid.**
+        * An associative array for a file (image or PDF) via URL:
+            * `['type' => 'file', 'url' => 'https://example.com/path/to/file']` (e.g., `['type' => 'file', 'url' => 'https://example.com/image.jpg']`).
     * `$responseType`: The desired format of the response (`GeminiClient::RESPONSE_TYPE_TEXT` or `GeminiClient::RESPONSE_TYPE_PHP_OBJECT`). Defaults to `GeminiClient::RESPONSE_TYPE_TEXT`.
     * Returns the API response in the specified format or `null` on error.
 * **`getHistory(): array`**
